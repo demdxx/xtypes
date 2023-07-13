@@ -26,3 +26,14 @@ Slice[int]([]int{1, 2, 3}).
 SliceReduce([]int{1, 2, 3}, func(val int, ret *float64) { *ret += 1/float64(val) })
 // 1.83333...
 ```
+
+### LazySlice
+
+```go
+NewLazySlice([]int{1, 2, 3}).
+  Filter(func(val int) bool { return val > 1 }).
+  // [2, 3]
+  Apply(func(val int) int { return val * val }).
+  // [4, 9]
+  Commit()
+```

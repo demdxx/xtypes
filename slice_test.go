@@ -37,7 +37,7 @@ func TestSlice(t *testing.T) {
 	})
 
 	t.Run("Sort", func(t *testing.T) {
-		ordered := Slice[int](testSlice).Sort(func(a, b int) bool { return a > b })
+		ordered := Slice[int](append([]int{}, testSlice...)).Sort(func(a, b int) bool { return a > b })
 		assert.ElementsMatch(t, testSliceOrdered, ordered)
 	})
 
@@ -46,5 +46,50 @@ func TestSlice(t *testing.T) {
 			Slice[int](testSlice).Each(func(a int) { panic("test") })
 		})
 		assert.Equal(t, len(testSlice), len(Slice[int](testSlice).Each(func(a int) {})))
+	})
+
+	t.Run("IndexOf", func(t *testing.T) {
+		assert.Equal(t, 5, Slice[int](testSlice).IndexOf(func(a int) bool { return a == 5 }))
+		assert.Equal(t, -1, Slice[int](testSlice).IndexOf(func(a int) bool { return a == 11 }))
+	})
+
+	t.Run("BinarySearch", func(t *testing.T) {
+		assert.Equal(t, 5, Slice[int](testSlice).BinarySearch(func(a int) bool { return a == 5 }))
+		assert.Equal(t, -1, Slice[int](testSlice).BinarySearch(func(a int) bool { return a == 11 }))
+	})
+
+	t.Run("Append", func(t *testing.T) {
+		assert.ElementsMatch(t, append(testSlice, 11), Slice[int](testSlice).Append(11))
+	})
+
+	t.Run("Prepend", func(t *testing.T) {
+		assert.ElementsMatch(t, append([]int{11}, testSlice...), Slice[int](testSlice).Prepend(11))
+	})
+
+	t.Run("ValueOr", func(t *testing.T) {
+		assert.Equal(t, 1, Slice[int](testSlice).ValueOr(1, 0))
+		assert.Equal(t, 1, Slice[int](testSlice).ValueOr(11, 1))
+	})
+
+	t.Run("RemoveAt", func(t *testing.T) {
+		sl := Slice[int](append([]int{}, testSlice...))
+		s1 := sl.RemoveAt(5)
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 6, 7, 8, 9, 10}, s1)
+		s2 := s1.RemoveAt(11)
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 6, 7, 8, 9, 10}, s2)
+	})
+
+	t.Run("RemoveRange", func(t *testing.T) {
+		sl := Slice[int](append([]int{}, testSlice...))
+		s1 := sl.RemoveRange(10, 8)
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 10}, s1)
+		s2 := s1.RemoveRange(8, 12)
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 5, 6, 7}, s2)
+		s3 := s2.RemoveRange(100, 200)
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 5, 6, 7}, s3)
+	})
+
+	t.Run("Copy", func(t *testing.T) {
+		assert.ElementsMatch(t, testSlice, Slice[int](testSlice).Copy())
 	})
 }
