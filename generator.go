@@ -3,13 +3,16 @@ package xtypes
 import "context"
 
 // GeneratorSimple returns generator which is not controlled from external
-func GeneratorSimple[T any](size int, genFn func() (T, bool)) <-chan T {
+func GeneratorSimple[T any](size int, genFn func(prev T) (T, bool)) <-chan T {
 	ch := make(chan T, size)
 	go func() {
 		defer close(ch)
+		var (
+			val T
+			ok  bool
+		)
 		for {
-			val, ok := genFn()
-			if !ok {
+			if val, ok = genFn(val); !ok {
 				break
 			}
 			ch <- val
@@ -19,13 +22,16 @@ func GeneratorSimple[T any](size int, genFn func() (T, bool)) <-chan T {
 }
 
 // Generator returns generator with context Done support
-func Generator[T any](ctx context.Context, size int, genFn func(ctx context.Context) (T, bool)) <-chan T {
+func Generator[T any](ctx context.Context, size int, genFn func(ctx context.Context, prev T) (T, bool)) <-chan T {
 	ch := make(chan T, size)
 	go func() {
 		defer close(ch)
+		var (
+			val T
+			ok  bool
+		)
 		for {
-			val, ok := genFn(ctx)
-			if !ok {
+			if val, ok = genFn(ctx, val); !ok {
 				break
 			}
 			select {

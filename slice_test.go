@@ -53,6 +53,11 @@ func TestSlice(t *testing.T) {
 		assert.Equal(t, -1, Slice[int](testSlice).IndexOf(func(a int) bool { return a == 11 }))
 	})
 
+	t.Run("Has", func(t *testing.T) {
+		assert.True(t, Slice[int](testSlice).Has(func(a int) bool { return a == 5 }))
+		assert.False(t, Slice[int](testSlice).Has(func(a int) bool { return a == 11 }))
+	})
+
 	t.Run("BinarySearch", func(t *testing.T) {
 		assert.Equal(t, 5, Slice[int](testSlice).BinarySearch(func(a int) bool { return a == 5 }))
 		assert.Equal(t, -1, Slice[int](testSlice).BinarySearch(func(a int) bool { return a == 11 }))

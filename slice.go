@@ -113,6 +113,11 @@ func (sl Slice[T]) IndexOf(fn func(val T) bool) int {
 	return -1
 }
 
+// Has slice values
+func (sl Slice[T]) Has(fn func(val T) bool) bool {
+	return sl.IndexOf(fn) > -1
+}
+
 // BinarySearch slice values
 func (sl Slice[T]) BinarySearch(fn func(val T) bool) int {
 	ret := sort.Search(len(sl), func(i int) bool { return fn(sl[i]) })
