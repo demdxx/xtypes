@@ -36,6 +36,10 @@ func TestSlice(t *testing.T) {
 		assert.Equal(t, 1+2+3+4+5+6+7+8+9+10, sum)
 	})
 
+	t.Run("SliceUnique", func(t *testing.T) {
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 5}, SliceUnique[int]([]int{0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}))
+	})
+
 	t.Run("Sort", func(t *testing.T) {
 		ordered := Slice[int](append([]int{}, testSlice...)).Sort(func(a, b int) bool { return a > b })
 		assert.ElementsMatch(t, testSliceOrdered, ordered)

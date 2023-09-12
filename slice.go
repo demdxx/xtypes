@@ -23,6 +23,19 @@ func SliceReduce[T any, R any](sl []T, reduce func(val T, ret *R)) R {
 	return *ret
 }
 
+// SliceUnique return new slice without duplicated values
+func SliceUnique[T comparable](sl []T) []T {
+	m := make(map[T]bool)
+	for _, val := range sl {
+		m[val] = true
+	}
+	ret := make([]T, 0, len(m))
+	for val := range m {
+		ret = append(ret, val)
+	}
+	return ret
+}
+
 // Append value to slice
 func (sl Slice[T]) Append(val T) Slice[T] {
 	return append(sl, val)
