@@ -53,4 +53,16 @@ func TestMap(t *testing.T) {
 		})
 		assert.Equal(t, len(testMap), len(Map[string, int](testMap).Each(func(k string, a int) {})))
 	})
+
+	t.Run("Copy", func(t *testing.T) {
+		assert.True(t, MapEqual(testMap, Map[string, int](testMap).Copy()))
+	})
+
+	t.Run("Keys", func(t *testing.T) {
+		assert.ElementsMatch(t, []string{"a", "b", "c"}, Map[string, int](testMap).Keys())
+	})
+
+	t.Run("Values", func(t *testing.T) {
+		assert.ElementsMatch(t, []int{0, 1, 2}, Map[string, int](testMap).Values())
+	})
 }

@@ -63,3 +63,30 @@ func (mp Map[K, V]) Each(iter func(key K, val V)) Map[K, V] {
 	}
 	return mp
 }
+
+// Copy map
+func (mp Map[K, V]) Copy() Map[K, V] {
+	nMap := make(Map[K, V], len(mp))
+	for key, val := range mp {
+		nMap[key] = val
+	}
+	return nMap
+}
+
+// Keys returns all keys of the map
+func (mp Map[K, V]) Keys() Slice[K] {
+	keys := make([]K, 0, len(mp))
+	for key := range mp {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// Values returns all values of the map
+func (mp Map[K, V]) Values() Slice[V] {
+	values := make([]V, 0, len(mp))
+	for _, val := range mp {
+		values = append(values, val)
+	}
+	return values
+}
