@@ -73,6 +73,12 @@ func (mp Map[K, V]) Copy() Map[K, V] {
 	return nMap
 }
 
+// Set value to the map
+func (mp Map[K, V]) Set(key K, val V) Map[K, V] {
+	mp[key] = val
+	return mp
+}
+
 // Keys returns all keys of the map
 func (mp Map[K, V]) Keys() Slice[K] {
 	keys := make([]K, 0, len(mp))

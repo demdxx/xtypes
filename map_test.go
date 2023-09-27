@@ -58,6 +58,10 @@ func TestMap(t *testing.T) {
 		assert.True(t, MapEqual(testMap, Map[string, int](testMap).Copy()))
 	})
 
+	t.Run("Set", func(t *testing.T) {
+		assert.True(t, MapEqual(Map[string, int](testMap).Copy().Set("d", 3), map[string]int{"a": 0, "b": 1, "c": 2, "d": 3}))
+	})
+
 	t.Run("Keys", func(t *testing.T) {
 		assert.ElementsMatch(t, []string{"a", "b", "c"}, Map[string, int](testMap).Keys())
 	})
