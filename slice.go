@@ -36,6 +36,43 @@ func SliceUnique[T comparable](sl []T) []T {
 	return ret
 }
 
+// Len of slice
+func (sl Slice[T]) Len() int {
+	return len(sl)
+}
+
+// First value from slice
+func (sl Slice[T]) First() *T {
+	if len(sl) == 0 {
+		return nil
+	}
+	return &sl[0]
+}
+
+// FirstOr value from slice or default value
+func (sl Slice[T]) FirstOr(def T) T {
+	if v := sl.First(); v != nil {
+		return *v
+	}
+	return def
+}
+
+// Last value from slice
+func (sl Slice[T]) Last() *T {
+	if len(sl) == 0 {
+		return nil
+	}
+	return &sl[len(sl)-1]
+}
+
+// LastOr value from slice or default value
+func (sl Slice[T]) LastOr(def T) T {
+	if v := sl.Last(); v != nil {
+		return *v
+	}
+	return def
+}
+
 // Append value to slice
 func (sl Slice[T]) Append(val T) Slice[T] {
 	return append(sl, val)

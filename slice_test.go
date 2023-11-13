@@ -40,6 +40,24 @@ func TestSlice(t *testing.T) {
 		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 5}, SliceUnique[int]([]int{0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}))
 	})
 
+	t.Run("Len", func(t *testing.T) {
+		assert.Equal(t, len(testSlice), Slice[int](testSlice).Len())
+	})
+
+	t.Run("First", func(t *testing.T) {
+		assert.Equal(t, &testSlice[0], Slice[int](testSlice).First())
+		assert.Equal(t, testSlice[0], Slice[int](testSlice).FirstOr(-100))
+		assert.Nil(t, Slice[int]([]int{}).First())
+		assert.Equal(t, -1, Slice[int]([]int{}).FirstOr(-1))
+	})
+
+	t.Run("Last", func(t *testing.T) {
+		assert.Equal(t, &testSlice[len(testSlice)-1], Slice[int](testSlice).Last())
+		assert.Equal(t, testSlice[len(testSlice)-1], Slice[int](testSlice).LastOr(-100))
+		assert.Nil(t, Slice[int]([]int{}).Last())
+		assert.Equal(t, -1, Slice[int]([]int{}).LastOr(-1))
+	})
+
 	t.Run("Sort", func(t *testing.T) {
 		ordered := Slice[int](append([]int{}, testSlice...)).Sort(func(a, b int) bool { return a > b })
 		assert.ElementsMatch(t, testSliceOrdered, ordered)
