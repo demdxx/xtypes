@@ -96,3 +96,43 @@ func (mp Map[K, V]) Values() Slice[V] {
 	}
 	return values
 }
+
+// Merge maps into one
+func (mp Map[K, V]) Merge(maps ...Map[K, V]) Map[K, V] {
+	fullCap := len(mp)
+	for _, m := range maps {
+		fullCap += len(m)
+	}
+	merged := make(Map[K, V], fullCap)
+	for key, val := range mp {
+		merged[key] = val
+	}
+	for _, m := range maps {
+		for key, val := range m {
+			merged[key] = val
+		}
+	}
+	return merged
+}
+
+// MergeConflict maps into one with conflict function resolver
+func (mp Map[K, V]) MergeConflict(conflictFunc func(V, V) V, maps ...Map[K, V]) Map[K, V] {
+	fullCap := len(mp)
+	for _, m := range maps {
+		fullCap += len(m)
+	}
+	merged := make(Map[K, V], fullCap)
+	for key, val := range mp {
+		merged[key] = val
+	}
+	for _, m := range maps {
+		for key, val := range m {
+			if v, ok := merged[key]; ok {
+				merged[key] = conflictFunc(v, val)
+			} else {
+				merged[key] = val
+			}
+		}
+	}
+	return merged
+}

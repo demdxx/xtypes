@@ -69,4 +69,18 @@ func TestMap(t *testing.T) {
 	t.Run("Values", func(t *testing.T) {
 		assert.ElementsMatch(t, []int{0, 1, 2}, Map[string, int](testMap).Values())
 	})
+
+	t.Run("Merge", func(t *testing.T) {
+		assert.True(t, MapEqual(Map[string, int](testMap).Merge(map[string]int{"d": 3}), map[string]int{"a": 0, "b": 1, "c": 2, "d": 3}))
+		assert.True(t, MapEqual(Map[string, int](testMap).Merge(map[string]int{"a": 3}), map[string]int{"a": 3, "b": 1, "c": 2}))
+		assert.True(t, MapEqual(Map[string, int](testMap).Merge(map[string]int{"a": 3, "b": 4}), map[string]int{"a": 3, "b": 4, "c": 2}))
+	})
+
+	t.Run("MergeConflict", func(t *testing.T) {
+		assert.True(t, MapEqual(
+			Map[string, int](testMap).MergeConflict(
+				func(i1, i2 int) int { return i1 + i2 },
+				map[string]int{"c": 100, "d": 3}),
+			map[string]int{"a": 0, "b": 1, "c": 102, "d": 3}))
+	})
 }
