@@ -12,13 +12,13 @@ var (
 
 // Any is a type alias for any.
 type Any struct {
-	val any
+	Val any
 }
 
 // IsNil checks if the value is nil.
 // It returns true if the value is nil, otherwise false.
 func (a *Any) IsNil() bool {
-	return a == nil || a.val == nil
+	return a == nil || a.Val == nil
 }
 
 // IsEmpty checks if the value is empty.
@@ -26,7 +26,7 @@ func (a *Any) IsNil() bool {
 // It returns true if the value is empty, otherwise false.
 // It also checks if the Any instance itself is nil.
 func (a *Any) IsEmpty() bool {
-	return a == nil || gocast.IsEmpty(a.val)
+	return a == nil || gocast.IsEmpty(a.Val)
 }
 
 // Set sets the value of the Any instance.
@@ -36,7 +36,7 @@ func (a *Any) Set(val any) error {
 	if a == nil {
 		return ErrBoxContainerIsNil
 	}
-	a.val = val
+	a.Val = val
 	return nil
 }
 
@@ -47,16 +47,16 @@ func (a *Any) Get() any {
 	if a == nil {
 		return nil
 	}
-	return a.val
+	return a.Val
 }
 
 // GetOr retrieves the value of the Any instance or returns a default value.
 // It returns the value if the Any instance is not nil, otherwise it returns the default value.
 func (a *Any) GetOr(def any) any {
-	if a == nil || a.val == nil {
+	if a == nil || a.Val == nil {
 		return def
 	}
-	return a.val
+	return a.Val
 }
 
 // Bool retrieves the value of the Any instance as a boolean.
@@ -76,7 +76,7 @@ func (a *Any) TryBool() (bool, error) {
 	if a == nil {
 		return false, ErrBoxContainerIsNil
 	}
-	return gocast.TryCast[bool](a.val)
+	return gocast.TryCast[bool](a.Val)
 }
 
 // Int retrieves the value of the Any instance as an integer.
@@ -178,12 +178,12 @@ func (a *Any) TryString() (string, error) {
 	if a == nil {
 		return "", ErrBoxContainerIsNil
 	}
-	return gocast.TryStr(a.val)
+	return gocast.TryStr(a.Val)
 }
 
 func tryNumber[T gocast.Numeric](a *Any) (T, error) {
 	if a == nil {
 		return 0, ErrBoxContainerIsNil
 	}
-	return gocast.TryNumber[T](a.val)
+	return gocast.TryNumber[T](a.Val)
 }

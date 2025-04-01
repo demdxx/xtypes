@@ -13,7 +13,7 @@ Package represents basic go types and collections with extended functionalty.
 ### Slice
 
 ```go
-Slice[int]([]int{1, 2, 3}).
+xtypes.Slice[int]([]int{1, 2, 3}).
   Filter(func(val int) bool { return val > 1 }).
   // [2, 3]
   Apply(func(val int) int { return val * val }).
@@ -23,17 +23,28 @@ Slice[int]([]int{1, 2, 3}).
   ReduceIntoOne(func(val int, ret *int) { *ret += val })
   // 13
 
-SliceReduce([]int{1, 2, 3}, func(val int, ret *float64) { *ret += 1/float64(val) })
+xtypes.SliceReduce([]int{1, 2, 3}, func(val int, ret *float64) { *ret += 1/float64(val) })
 // 1.83333...
 ```
 
 ### LazySlice
 
 ```go
-NewLazySlice([]int{1, 2, 3}).
+xtypes.NewLazySlice([]int{1, 2, 3}).
   Filter(func(val int) bool { return val > 1 }).
   // [2, 3]
   Apply(func(val int) int { return val * val }).
   // [4, 9]
   Commit()
+```
+
+### Any type boxing
+
+```go
+val := xtypes.Any(1)
+
+fmt.Println(val.Int()) // 1
+fmt.Println(val.Float64()) // 1.0
+fmt.Println(val.String()) // "1"
+fmt.Println(val.Bool()) // true
 ```

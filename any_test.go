@@ -8,7 +8,7 @@ import (
 
 func TestAny(t *testing.T) {
 	t.Run("general", func(t *testing.T) {
-		v := &Any{}
+		v := &Any{nil}
 
 		assert.True(t, v.IsNil(), "Expected IsNil to be true, got false")
 		assert.True(t, v.IsEmpty(), "Expected IsEmpty to be true, got false")
@@ -79,6 +79,8 @@ func TestAny(t *testing.T) {
 	})
 
 	t.Run("nil", func(t *testing.T) {
+		assert.Nil(t, (*Any)(nil).Get(), "Expected nil Any instance to be nil")
+
 		assert.EqualError(t, (*Any)(nil).Set("test"), ErrBoxContainerIsNil.Error(), "Expected Set to return an error when called on nil Any instance")
 
 		_, err := (*Any)(nil).TryBool()
