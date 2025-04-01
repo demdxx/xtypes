@@ -1,10 +1,13 @@
 module github.com/demdxx/xtypes
 
-go 1.18
+go 1.23.0
+
+toolchain go1.24.1
 
 require (
-	github.com/stretchr/testify v1.8.1
-	golang.org/x/exp v0.0.0-20230127193734-31bee513bff7
+	github.com/demdxx/gocast/v2 v2.9.0
+	github.com/stretchr/testify v1.10.0
+	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
 )
 
 require (
